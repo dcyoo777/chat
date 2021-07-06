@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -7,17 +7,36 @@ import {
   Text,
   useColorScheme,
   View,
+  TouchableOpacity,
+  TextInput,
 } from 'react-native';
 
 import {
   Colors,
 } from 'react-native/Libraries/NewAppScreen';
 
-import ChattingBox from "./components/ChattingBox";
+import ChattingRoomScreen from "./Screen/ChattingRoomScreen";
+import HomeScreen from "./Screen/HomeScreen";
 
 const App = () => {
-  const isDarkMode = useColorScheme() === 'dark';
 
+  const [screen, setScreen] = useState('Home')
+  const [screenView, setScreenView] = useState()
+  const [name, setName] = useState('');
+
+  useEffect(() => {
+    switch(screen){
+      case 'Home':
+        setScreenView(<HomeScreen setName={setName} setScreen={setScreen}/>)
+        break;
+      case 'Room':
+        setScreenView(<ChattingRoomScreen name={name} setScreen={setScreen}/>)
+        break;
+    }
+
+  }, [screen])
+
+  const isDarkMode = useColorScheme() === 'dark';
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
@@ -26,21 +45,7 @@ const App = () => {
     <SafeAreaView style={[backgroundStyle, {flex: 1, flexDirection: "column"}]}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
-      <View style={{height: 60, backgroundColor: "yellow"}}>
-        <Text>
-
-        </Text>
-      </View>
-
-      <View style={{flex: 1}}>
-        <ChattingBox />
-      </View>
-
-      <View style={{height: 60, backgroundColor: "yellow"}}>
-        <Text>
-
-        </Text>
-      </View>
+      {screenView}
 
     </SafeAreaView>
   );

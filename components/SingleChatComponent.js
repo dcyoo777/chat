@@ -1,22 +1,22 @@
 import React from 'react'
 import { StyleSheet, View, Text } from "react-native";
 
-const SingleChatComponent = (props) => {
+const SingleChatComponent = ({item}) => {
   return (
-    <View style={[props.writer==="Carl"?{flexDirection: "row-reverse"}:{flexDirection: "row"}, styles.messageArea]}>
+    <View style={[item.mine?{flexDirection: "row-reverse"}:{flexDirection: "row"}, styles.messageArea]}>
 
 
       <View style={[styles.miniProfile]}>
         <View style={[styles.profileImage]}></View>
         <Text style={[]}>
-          {props.writer}
+          {item.sender}
         </Text>
       </View>
 
 
-      <View style={[styles.chatView,props.writer==="Carl"?styles.mine:styles.others]}>
+      <View style={[styles.chatView,item.mine?styles.mine:styles.others]}>
         <Text style={[]}>
-          {props.message}
+          {item.text}
         </Text>
       </View>
 

@@ -1,54 +1,55 @@
-import React, {useState, useEffect} from 'react'
-import { StyleSheet, FlatList, View, Text } from "react-native";
+import React, {useState, useEffect, useRef} from 'react'
+import { StyleSheet, ScrollView, FlatList, View, Text } from "react-native";
 
 import SingleChatComponent from "./SingleChatComponent";
 
 
-const ChattingBox = () => {
+const ChattingBox = ({messages}) => {
 
-  const [messages, setMessages] = useState([
-    {
-      id: 0,
-      writer: "Jack",
-      message: "Hello",
-      time: new Date(),
-    },
-  ]);
+  // const [messageView, setMessageView] = useState();
+  //
+  // useEffect(() => {
+  //
+  //   console.log("update")
+  //
+  //   const temp = [];
+  //
+  //   messages.forEach((m) => {
+  //     temp.push(<SingleChatComponent key={m.time} writer={m.sender} message={m.text}/>)
+  //   })
+  //
+  //   setMessageView(temp);
+  //
+  // },[messages])
 
-  const [messageView, setMessageView] = useState();
+  const scrollViewRef = useRef();
 
   useEffect(() => {
-
-    const temp = [];
-
-    messages.forEach((m) => {
-      temp.push(<SingleChatComponent writer={m.writer} message={m.message}/>)
-    })
-
-    setMessageView(temp);
-
-  },[])
+    console.log("update")
+  }, [messages])
 
   return (
     <FlatList
+      ref={scrollViewRef}
       data={messages}
       renderItem={SingleChatComponent}
-      keyExtractor={item => item.id}
+      onContentSizeChange={()=>{
+        scrollViewRef.current.scrollToEnd();
+      }}
+      keyExtractor={item => item.time}
       ListEmptyComponent={
         <View style={{justifyContent: "center", flex: 1}}>
           <Text style={{alignItems: "center", textAlign: "center", fontSize: 20}}>Nothing!</Text>
         </View>
       }
     />
-    // <View style={[styles.box]}>
-    //   {messageView}
-    // </View>
   )
 }
 
 export default ChattingBox;
 
 const styles = StyleSheet.create({
+
   box:{
     backgroundColor: "white",
     paddingBottom: 16,
